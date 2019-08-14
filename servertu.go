@@ -12,7 +12,7 @@ import (
 func (s *Server) ListenRTU(serialConfig *serial.Config) (err error) {
 	port, err := serial.Open(serialConfig)
 	if err != nil {
-		log.Fatalf("failed to open %s: %v\n", serialConfig.Address, err)
+		mlog.Trace("failed to open %s: %v\n", serialConfig.Address, err)
 	}
 	s.ports = append(s.ports, port)
 	s.acceptSerialRequests(port)
@@ -26,7 +26,7 @@ func (s *Server) acceptSerialRequests(port serial.Port) {
 		bytesRead, err := port.Read(buffer)
 		if err != nil {
 			if err != io.EOF {
-				log.Printf("serial read error %v\n", err)
+				mlog.Trace("serial read error %v\n", err)
 			}
 			return
 		}
@@ -38,7 +38,7 @@ func (s *Server) acceptSerialRequests(port serial.Port) {
 
 			frame, err := NewRTUFrame(packet)
 			if err != nil {
-				log.Printf("bad serial frame error %v\n", err)
+				mlog.Trace("bad serial frame error %v\n", err)
 				return
 			}
 
