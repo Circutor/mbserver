@@ -2,7 +2,6 @@ package mbserver
 
 import (
 	"io"
-	"log"
 
 	"github.com/goburrow/serial"
 	"github.com/jbrodriguez/mlog"
