@@ -3,6 +3,8 @@ package mbserver
 import (
 	"encoding/binary"
 	"fmt"
+	
+	"github.com/jbrodriguez/mlog"
 )
 
 // RTUFrame is the Modbus TCP frame.
@@ -17,7 +19,7 @@ type RTUFrame struct {
 func NewRTUFrame(packet []byte) (*RTUFrame, error) {
 	// Check the that the packet length.
 	if len(packet) < 5 {
-		return nil, fmt.Errorf("RTU Frame error: packet less than 5 bytes: %v", packet)
+		return nil, mlog.Trace("RTU Frame error: packet less than 5 bytes: %v", packet)
 	}
 
 	// Check the CRC.
@@ -25,7 +27,7 @@ func NewRTUFrame(packet []byte) (*RTUFrame, error) {
 	crcExpect := binary.LittleEndian.Uint16(packet[pLen-2 : pLen])
 	crcCalc := crcModbus(packet[0 : pLen-2])
 	if crcCalc != crcExpect {
-		return nil, fmt.Errorf("RTU Frame error: CRC (expected 0x%x, got 0x%x)", crcExpect, crcCalc)
+		return nil, mlog.Trace("RTU Frame error: CRC (expected 0x%x, got 0x%x)", crcExpect, crcCalc)
 	}
 
 	frame := &RTUFrame{
