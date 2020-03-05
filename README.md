@@ -65,7 +65,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/goburrow/modbus"
+	"github.com/Circutor/modbus"
 )
 
 func main() {
